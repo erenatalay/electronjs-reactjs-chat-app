@@ -1,0 +1,40 @@
+{
+  "name": "electron-react-chatapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "watch": "webpack --config webpack.common.js --watch"
+  },
+  "author": "Eren Atalay",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^12.0.8",
+    "electron-reload": "^1.5.0"
+  },
+  "dependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-react": "^7.10.4",
+    "axios": "^0.21.1",
+    "babel-loader": "^8.1.0",
+    "bootstrap": "^4.5.2",
+    "css-loader": "^4.2.2",
+    "dotenv-webpack": "^7.0.3",
+    "firebase": "^8.6.3",
+    "install": "^0.13.0",
+    "npm": "^7.16.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4",
+    "react-router-dom": "^5.2.0",
+    "redux": "^4.1.0",
+    "redux-thunk": "^2.3.0",
+    "sass": "^1.26.10",
+    "sass-loader": "^10.0.2",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
