@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Provider} from 'react-redux';
 import configureStore from "./store"
 import Homeview from "./views/Home";
@@ -9,14 +9,16 @@ import {
 } from "react-router-dom"
 import Navbar from "./components/Navbar";
 import SettingsView from "./views/Settings";
-import LoginView from "./views/Login";
-import RegisterView from "./views/Register";
+import WelcomeView from "./views/Welcome";
 import ChatView from "./views/Chat";
-
+import { listenToAuthChanges } from "./actions/auth";
 const store = configureStore();
 
 
 const App = () => {
+  useEffect(() => {
+    store.dispatch(listenToAuthChanges())
+  }, [])
 
   return (
 <Provider store={store}>
@@ -25,8 +27,12 @@ const App = () => {
             <div className='content-wrapper'>
 
       <Switch>
+      <Route  path="/" exact>
+          <WelcomeView/>
+        </Route>
 
-        <Route exact path="/">
+
+        <Route  path="/home">
           <Homeview />
         </Route>
 
@@ -38,14 +44,13 @@ const App = () => {
           <SettingsView/>
         </Route>
 
-        <Route  path="/login">
-          <LoginView/>
-        </Route>
+ 
 
-        <Route  path="/register">
+        {/* <Route  path="/register">
         <RegisterView/>
 
         </Route>
+  */}
 
       </Switch>
     </div>

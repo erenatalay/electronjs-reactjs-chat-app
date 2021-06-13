@@ -1,7 +1,11 @@
 
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
+import { logoutUser } from '../actions/auth'
 const Navbar = () => {
+    const dispatch = useDispatch()
+    const user = useSelector(({ auth }) => auth.user)
     const history = useHistory();
     return (
         <div className="chat-navbar">
@@ -11,15 +15,22 @@ const Navbar = () => {
                     <Link to="/settings" className="btn btn-outline-success ml-2">Settings</Link>
                 </div>
                 <div className="chat-navbar-inner-right">
-                    <span className="logged-in-user">Hi User</span>
+
                     <Link
-                        to="/register"
-                        className="btn  btn-outline-danger ml-2">Register</Link>
-                    <Link
-                        to="/login"
+                        to="/"
 
                         className="btn  btn-outline-success ml-2">Login
-                        </Link>
+                    </Link>
+                    {user &&
+                        <>
+                            <img className="avatar mr-2" src={user.avatar} />
+                            <span className="logged-in-user">Hi {user.username}</span>
+                            <button
+                                onClick={() => dispatch(logoutUser())}
+                                className="btn btn-outline-danger ml-4">Logout
+                            </button>
+                        </>
+                    }
                 </div>
             </nav>
         </div>
