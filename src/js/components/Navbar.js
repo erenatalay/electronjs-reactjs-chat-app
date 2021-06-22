@@ -2,7 +2,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
-import { logoutUser } from '../actions/auth'
+import { logout } from '../actions/auth'
 const Navbar = () => {
     const dispatch = useDispatch()
     const user = useSelector(({ auth }) => auth.user)
@@ -26,7 +26,7 @@ const Navbar = () => {
                             <img className="avatar mr-2" src={user.avatar} />
                             <span className="logged-in-user">Hi {user.username}</span>
                             <button
-                                onClick={() => dispatch(logoutUser())}
+                                onClick={() => dispatch(logout())}
                                 className="btn btn-outline-danger ml-4">Logout
                             </button>
                         </>
