@@ -1,63 +1,84 @@
 import React, { useEffect } from "react";
-import {Provider} from 'react-redux';
-import configureStore from "./store"
+import { useDispatch, useSelector } from 'react-redux';
 import Homeview from "./views/Home";
 import {
   HashRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom"
-import Navbar from "./components/Navbar";
+import StoreProvider from "./store/StoreProvider";
 import SettingsView from "./views/Settings";
 import WelcomeView from "./views/Welcome";
 import ChatView from "./views/Chat";
+import LoadingView from "./components/shared/LoadingView";
+
 import { listenToAuthChanges } from "./actions/auth";
-const store = configureStore();
 
-
-const App = () => {
-  useEffect(() => {
-    store.dispatch(listenToAuthChanges())
-  }, [])
-
-  return (
-<Provider store={store}>
-    <Router >
-            <Navbar />
-            <div className='content-wrapper'>
-
-      <Switch>
-      <Route  path="/" exact>
-          <WelcomeView/>
-        </Route>
-
-
-        <Route  path="/home">
-          <Homeview />
-        </Route>
-
-        <Route  path="/chat/:id">
-          <ChatView/>
-        </Route>
-
-        <Route  path="/settings">
-          <SettingsView/>
-        </Route>
-
- 
-
-        {/* <Route  path="/register">
-        <RegisterView/>
-
-        </Route>
-  */}
-
-      </Switch>
-    </div>
-
-    </Router>
-    </Provider>
+const AuthRoute = ({children, ...rest}) => {
+  const user = useSelector(({auth}) => auth.user)
+  const onlyChild = React.Children.only(children)
+  return(
+      <Route
+      {...rest}
+        render={props => 
+          user ? React.cloneElement(onlyChild,{...rest,...props}) : 
+          <Redirect to="/"/>
+        }
+      />
   )
 }
 
-export default App;
+const ContentWrapper = ({ children }) => <div className='content-wrapper'>{children}</div>
+
+const ChatApp = () => {
+  const dispatch = useDispatch();
+  const isChecking = useSelector(({ auth }) => auth.isChecking)
+  useEffect(() => {
+    dispatch(listenToAuthChanges())
+  }, [dispatch])
+
+  if (isChecking) {
+    return <LoadingView />
+  }
+  return (
+    <Router >
+      <ContentWrapper>
+
+        <Switch>
+          <Route path="/" exact>
+            <WelcomeView />
+          </Route>
+
+          <AuthRoute path="/home">
+            <Homeview />
+          </AuthRoute>
+
+          <AuthRoute path="/chat/:id">
+            <ChatView />
+          </AuthRoute>
+
+          <AuthRoute path="/settings">
+            <SettingsView />
+          </AuthRoute>
+
+        </Switch>
+      </ContentWrapper>
+
+    </Router>
+  )
+}
+
+
+
+
+const App = () => {
+  return (
+    <StoreProvider>
+      <ChatApp />
+
+    </StoreProvider>
+  )
+}
+
+export default App

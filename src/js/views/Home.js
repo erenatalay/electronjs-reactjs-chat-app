@@ -3,14 +3,17 @@ import { fetchChats } from '../actions/chats'
 import AvailableChatsList from '../components/AvailableChatsList'
 import JoinedChatList from '../components/JoinedChatList'
 import ViewTitle from '../components/shared/ViewTitle'
-import {useDispatch,useSelector} from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import {viewBaseLayout} from "../layouts/Base"
+
 const Home = () => {
     const dispatch = useDispatch()
-    const chats = useSelector(({chats}) => chats.items)
+    const chats = useSelector(({ chats }) => chats.items)
     useEffect(() => {
         dispatch(fetchChats())
     }, [dispatch])
     return (
+
             <div className="row no-gutters fh">
                 <div className="col-3 fh">
                     <JoinedChatList chats={chats} />
@@ -21,9 +24,8 @@ const Home = () => {
                     <AvailableChatsList chats={chats} />
                 </div>
             </div>
-     
 
     )
 }
 
-export default Home
+export default viewBaseLayout(Home);
