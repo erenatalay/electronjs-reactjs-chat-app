@@ -5,11 +5,13 @@ import JoinedChatList from '../components/JoinedChatList'
 import ViewTitle from '../components/shared/ViewTitle'
 import { useDispatch, useSelector } from "react-redux"
 import {viewBaseLayout} from "../layouts/Base"
+import Notifications from '../utils/notifications'
 
 const Home = () => {
     const dispatch = useDispatch()
     const chats = useSelector(({ chats }) => chats.items)
     useEffect(() => {
+        Notifications.setup();
         dispatch(fetchChats())
     }, [dispatch])
     return (
