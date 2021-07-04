@@ -11,6 +11,7 @@ import StoreProvider from "./store/StoreProvider";
 import SettingsView from "./views/Settings";
 import WelcomeView from "./views/Welcome";
 import ChatView from "./views/Chat";
+import ChatCreate from "./views/ChatCreate";
 import LoadingView from "./components/shared/LoadingView";
 
 import { listenToAuthChanges } from "./actions/auth";
@@ -35,12 +36,12 @@ const ContentWrapper = ({ children }) => <div className='content-wrapper'>{child
 const ChatApp = () => {
   const dispatch = useDispatch();
   const isChecking = useSelector(({ auth }) => auth.isChecking);
-  const isOnline = useSelector(({app}) => app.isOnline);
+  const isOnline = useSelector(({ app }) => app.isOnline);
 
   useEffect(() => {
-    const unsubFromAuth =  dispatch(listenToAuthChanges())
+    const unsubFromAuth = dispatch(listenToAuthChanges())
     const unsubFromConnection = dispatch(listenToConnectionChanges())
-    return  () => {
+    return () => {
       unsubFromAuth()
       unsubFromConnection();
     }
@@ -57,7 +58,7 @@ const ChatApp = () => {
   return (
     <Router >
       <ContentWrapper>
-       
+
         <Switch>
           <Route path="/" exact>
             <WelcomeView />
@@ -69,6 +70,10 @@ const ChatApp = () => {
 
           <AuthRoute path="/chat/:id">
             <ChatView />
+          </AuthRoute>
+
+          <AuthRoute path="/chatCreate">
+            <ChatCreate />
           </AuthRoute>
 
           <AuthRoute path="/settings">
