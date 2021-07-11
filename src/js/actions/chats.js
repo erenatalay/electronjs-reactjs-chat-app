@@ -38,4 +38,24 @@ export const createChat = (formData, userId) => async dispatch => {
 }
 
 
+export const subscribeToChat = chatId => dispatch =>
+  api
+    .subscribeToChat(chatId, async (chat) => {
+
+      const joinedUsers = await Promise.all(chat.joinedUsers.map(async userRef => {
+        const userSnapshot = await userRef.get();
+        return userSnapshot.data();
+      }))
+
+      chat.joinedUsers = joinedUsers;
+      dispatch({type: 'CHATS_SET_ACTIVE_CHAT', chat})
+    })
+
+    
+export const subscribeToProfile = (uid,chatId) => dispatch =>
+api
+  .subscribeToProfile(uid, user =>  {
+    dispatch({type: 'CHATS_UPDATE_USER_STATE', user,chatId})
+  })
+
 /*https://banner2.cleanpng.com/20180627/qvc/kisspng-the-legend-of-zelda-majora-s-mask-discord-compute-discord-icon-5b3371b7b55eb4.6840271215300981037429.jpg*/

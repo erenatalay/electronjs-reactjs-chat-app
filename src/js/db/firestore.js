@@ -8,6 +8,11 @@ import '/node_modules/@firebase/firestore';
     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.FIREBASE_APP_ID,
     measurementId: process.env.FIREBASE_MEASURMENT_ID,
+    databaseURL: process.env.FIREBASE_DATABASE_URL
   };
+
+  export const { Timestamp } = firebase.firestore;
+
+
   // Initialize Firebase
   export default  firebase.initializeApp(config).firestore();
