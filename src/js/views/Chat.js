@@ -5,7 +5,13 @@ import ChatMessagesList from '../components/ChatMEssagesList'
 import ChatUserList from '../components/ChatUserList'
 import ViewTitle from '../components/shared/ViewTitle'
 import { viewBaseLayout } from "../layouts/Base"
-import { subscribeToChat, subscribeToProfile } from '../actions/chats';
+import { 
+    subscribeToChat, 
+    subscribeToProfile,
+    sendChatMessage ,
+    subscribeToMessages,
+    registerMessageSubscription
+} from '../actions/chats';
 import LoadingView from '../components/shared/LoadingView';
 import Messenger from '../components/Messenger';
 
@@ -13,11 +19,20 @@ const Chat = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const peopleWatchers = useRef({})
+    const messageList = useRef({});
     const activeChat = useSelector(({ chats }) => chats.activeChats[id])
+    const messages = useSelector(({chats}) => chats.messages[id])
+    const messagesSub = useSelector(({chats}) => chats.messagesSubs[id])
     const joinedUsers = activeChat?.joinedUsers;
     useEffect(() => {
         const unSubFromChat = dispatch(subscribeToChat(id))
 
+        if (!messagesSub) {
+            const unSubFromMessages = dispatch(subscribeToMessages(id))
+            dispatch(registerMessageSubscription(id,unSubFromMessages))
+        }
+
+      
         return () => {
             unSubFromChat();
             unsubFromJoinedUsers();
@@ -38,9 +53,10 @@ const Chat = () => {
         })
     }, [dispatch, id]) 
 
-    const sendMessage = message => {
-        alert(JSON.stringify(message))
-    }
+    const sendMessage = useCallback(message => {
+        dispatch(sendChatMessage(message ,id))
+        .then(_=> messageList.current.scrollIntoView(false))
+    },[id])
 
 
     const unsubFromJoinedUsers = useCallback(() => {
@@ -58,7 +74,9 @@ const Chat = () => {
             </div>
             <div className="col-9 fh">
                 <ViewTitle text={`Channel:${activeChat?.name}`} />
-                <ChatMessagesList />
+                <ChatMessagesList
+                innerRef={messageList}
+                messages={messages} />
                 <Messenger onSubmit={sendMessage} />
 
             </div>

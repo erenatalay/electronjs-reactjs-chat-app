@@ -38,3 +38,19 @@ export const subscribeToChat = (chatId, onSubsribe) =>
     .collection('profiles')
     .doc(uid)
     .onSnapshot(snapshot => onSubsribe(snapshot.data()))
+
+
+    export const sendChatMessage = (message, chatId) =>
+    db
+      .collection('chat')
+      .doc(chatId)
+      .collection('messages')
+      .doc(message.timestamp)
+      .set(message)
+
+    export const subscribeToMessages = (chatId,onSubsribe) =>
+    db.
+    collection("chat")
+    .doc(chatId)
+    .collection("messages")
+    .onSnapshot(snapshot => onSubsribe(snapshot.docChanges()))

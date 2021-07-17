@@ -1,13 +1,38 @@
 //main process
-const { app, BrowserWindow, ipcMain, Notification } = require("electron");
+const { app, BrowserWindow, ipcMain, Notification,Menu,Tray  } = require("electron");
 const path = require("path");
 const isDev = !app.isPackaged;
+const dockIcon = path.join(__dirname, 'assets', 'images', 'react_app_logo.png');
+const trayIcon = path.join(__dirname, 'assets', 'images', 'react_icon.png');
+
+function createSplashWindow() {
+    const win = new BrowserWindow({
+      width: 400,
+      height: 200,
+      frame :false,
+      transparent : true,
+      webPreferences: {
+        nodeIntegration: false,
+        worldSafeExecuteJavaScript: true,
+        contextIsolation: true,
+      }
+    })
+  
+    win.loadFile('splash.html')
+    return win;
+
+  }
+  
+
+
+
 const createWindow = () => {
     //Browser Window + Rennder proccess
     const win = new BrowserWindow({
         width: 800,
         height: 600,
-        backgroundColor: "white",
+        backgroundColor: "#6e707e",
+        show : false,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: true,
@@ -20,6 +45,7 @@ const createWindow = () => {
 
     win.loadFile("index.html");
     isDev && win.webContents.openDevTools();
+    return win
 }
 
 if (isDev) {
@@ -28,7 +54,35 @@ if (isDev) {
     })
 }
 
-app.whenReady().then(createWindow)
+if (process.platform === 'darwin') {
+    app.dock.setIcon(dockIcon);
+  }
+  let tray = null;
+app.whenReady()
+  .then(() => {
+     const template = require('./src/js/utils/Menu').createTemplate(app);
+    const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
+
+
+    tray = new Tray(trayIcon);
+    tray.setContextMenu(menu);
+
+    const mainApp = createWindow();
+     const splash = createSplashWindow()
+
+
+     mainApp.once("ready-to-show",() => {
+   
+
+         setTimeout(() => {
+            splash.destroy();
+            mainApp.show();
+         },3000)
+     })
+
+
+  });
 
 ipcMain.on("notify", (_, message) => {
     new Notification({ title: "Notification", body: message }).show();

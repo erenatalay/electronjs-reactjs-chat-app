@@ -6,6 +6,9 @@ import RegisterForm from "../components/RegisterForm";
 const Welcome = () => {
   const [isLoginView, setisLogin] = useState(true);
   const user = useSelector(({ auth }) => auth.user)
+
+
+
   const opInText = isLoginView ?
     ["Need an account ?", "Register"] :
     ["Aldready registered", "Login"]
@@ -29,4 +32,4 @@ const Welcome = () => {
   )
 }
 
-export default Welcome
+export default Welcome;

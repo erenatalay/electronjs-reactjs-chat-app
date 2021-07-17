@@ -5,13 +5,69 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "watch": "webpack --config webpack.common.js --watch"
+    "watch": "webpack --config webpack.common.js --watch",
+    "build": "webpack --config webpack.prod.js",
+    "pack" : "electron-builder --dir",
+    "dist" : "electron-builder",
+    "make:linux" : "electron-builder --linux",
+    "make:macos" : "electron-builder --max",
+    "make:win" : "electron-builder --win --x64"
   },
   "author": "Eren Atalay",
   "license": "ISC",
+  "build": {
+    "productName": "StartChat App",
+    "appId": "com.starlince.StartChat",
+    "files": [
+      "build/**/*",
+      "assets/**/*",
+      "utils/**/*",
+      "index.html",
+      "splash.html",
+      "splash.css",
+      "main.js",
+      "preload.js"
+    ],
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "icon": "assets/images/react_app_logo.png",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 430,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "icon": "assets/images/react_app_logo.png",
+      "target": [
+        "nsis"
+      ]
+    },
+    "linux": {
+      "target": [
+        "deb",
+        "rpm",
+        "AppImage"
+      ],
+      "category": "Development"
+    }
+  },
   "devDependencies": {
     "electron": "^12.0.8",
-    "electron-reload": "^1.5.0"
+    "electron-builder": "^22.11.7",
+    "electron-reload": "^1.5.0",
+    "webpack-merge": "^5.8.0"
   },
   "dependencies": {
     "@babel/core": "^7.11.6",
@@ -25,6 +81,7 @@
     "dotenv-webpack": "^7.0.3",
     "firebase": "^8.6.3",
     "install": "^0.13.0",
+    "moment": "^2.29.1",
     "npm": "^7.16.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

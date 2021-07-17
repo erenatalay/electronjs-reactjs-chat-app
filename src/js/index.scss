@@ -47,6 +47,9 @@ html, body {
   &.dark {
     background-color: $gray-900;
     color: white;
+    .card-body {
+      color : black;
+    }
 
     .chat-container li .chat-text-wrapper {
       background: #4d4d4d;
@@ -516,5 +519,19 @@ ul {
         max-width: 480px;
       }
     }
+  }
+}
+
+.dark {
+  .loading-screen {
+    color : white;
+  }
+
+  .loading-view-container {
+    background-color : $gray-900;
+  }
+
+  .sk-chase-dot::before{
+    background-color: white;
   }
 }
