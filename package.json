@@ -11,7 +11,7 @@
     "dist" : "electron-builder",
     "make:linux" : "electron-builder --linux",
     "make:macos" : "electron-builder --max",
-    "make:win" : "electron-builder --win --x64"
+    "make:win": "electron-builder --win --x64"
   },
   "author": "Eren Atalay",
   "license": "ISC",
@@ -26,7 +26,7 @@
       "splash.html",
       "splash.css",
       "main.js",
-      "preload.js"
+      "proload.js"
     ],
     "mac": {
       "category": "public.app-category.developer-tools",

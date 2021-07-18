@@ -1,17 +1,21 @@
-import React from 'react'
-import {viewBaseLayout} from "../layouts/Base"
-import { useDispatch,useSelector } from 'react-redux'
-import { updateSettings } from '../actions/settings'
-const Settings = () => {
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { viewBaseLayout } from '../layouts/Base';
+import { updateSettings } from '../actions/settings';
 
- const dispatch = useDispatch();
- const {isDarkTheme,showNotifications,playSound} = useSelector(({settings}) => settings)
-  const handleChange = ({target : { checked , name}}) => {
-      dispatch(updateSettings(name,checked))
+const  Settings = () => {
+  const dispatch = useDispatch();
+  const {
+    isDarkTheme,
+    showNotifications,
+    playSound } = useSelector(({settings}) => settings)
+
+  const handleChange = ({target: {checked, name}}) => {
+    dispatch(updateSettings(name, checked))
   }
 
-    return (
-        <div className="centered-view">
+  return (
+    <div className="centered-view">
       <div className="centered-container">
         <form className="centered-container-form">
           <div className="header">Adjust application settings</div>
@@ -19,8 +23,8 @@ const Settings = () => {
             <div className="my-3">
               <div className="form-check">
                 <input
-                checked={isDarkTheme}
-                onChange={handleChange}
+                  checked={isDarkTheme}
+                  onChange={handleChange}
                   name="isDarkTheme"
                   type="checkbox"
                   className="form-check-input" />
@@ -28,9 +32,8 @@ const Settings = () => {
               </div>
               <div className="form-check">
                 <input
-                onChange={handleChange}
-                checked={showNotifications}
-
+                  checked={showNotifications}
+                  onChange={handleChange}
                   name="showNotifications"
                   type="checkbox"
                   className="form-check-input" />
@@ -38,9 +41,8 @@ const Settings = () => {
               </div>
               <div className="form-check">
                 <input
-                onChange={handleChange}
-                checked={playSound}
-
+                  checked={playSound}
+                  onChange={handleChange}
                   name="playSound"
                   type="checkbox"
                   className="form-check-input" />
@@ -57,7 +59,8 @@ const Settings = () => {
         </form>
       </div>
     </div>
-    )
+  )
 }
 
-export default viewBaseLayout(Settings , {canGoBack : true});
+
+export default viewBaseLayout(Settings, {canGoBack: true});

@@ -35,3 +35,8 @@ const Home = () => {
 }
 
 export default viewBaseLayout(Home);
+
+
+
+
+viewBaseLayout
